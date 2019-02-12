@@ -1,0 +1,117 @@
+<h1>Bienvenue !</h1>
+<p>Ceci est ma première variable : <%= @variable %>.</p>
+
+<div class="boxes_container">
+  <div class="box">
+    <div class="text_box">
+      <h2>
+        <a target="_blank" href="https://www.linkedin.com/in/julien-guitton/">
+          <i class="fa fa-linkedin"></i><span>Mon LinkedIn</span>
+        </a>      
+      </h2>
+      <p>Vous trouverez ici quelques informations sur ce que vous pourrez trouver sur mon LinkedIn.</p>
+    </div>
+    <div class="data_box">
+      <div class="sub_data_box">
+        <span class="data">30</span>
+        <p>Relations</p>
+      </div>
+      <div class="sub_data_box">
+        <span class="data">2</span>
+        <p>Stages</p>
+      </div>
+      <div class="sub_data_box">
+        <span class="data">1</span>
+        <p>Diplôme</p>
+      </div>
+    </div>
+    <a class="detail" target="_blank" href="https://www.linkedin.com/in/julien-guitton/">
+      <span>En savoir plus +</span>
+    </a>      
+  </div>
+
+  <div class="box">
+    <div class="text_box">
+      <h2>
+        <a target="_blank" href="https://github.com/juldrixx">
+          <i class="fa fa-github"></i><span>Mon Github</span>
+        </a>      
+      </h2>
+      <p>Vous trouverez ici quelques informations sur ce que vous pourrez trouver sur mon Github.</p>
+    </div>
+    <div class="data_box">
+      <span class="data">3</span>
+      <p>Projets</p>
+    </div>
+    <a class="detail" target="_blank" href="https://github.com/juldrixx">
+      <span>En savoir plus +</span>
+    </a>      
+  </div>
+
+  <div class="box">
+    <div class="text_box">
+      <h2>
+        <a target="_blank" href="https://hyblab.polytech.univ-nantes.fr/region-pdl-audio/">
+          <i class="fa fa-trophy"></i><span>Archi-Sons</span>
+        </a>      
+      </h2>
+      <p>Vous trouverez ici quelques informations sur le site présentant les archives sonores de la région des Pays de la Loire, réalisé durant le HybLab 2019.</p>
+    </div>
+    <div class="data_box">
+      <div class="sub_data_box">
+        <span class="data">7</span>
+        <p>Personnes</p>
+      </div>
+      <div class="sub_data_box">
+        <span class="data">3</span>
+        <p>Semaines</p>
+      </div>
+      <div class="sub_data_box">
+        <span class="data">1</span>
+        <p>Prix</p>
+      </div>
+    </div>
+    <a class="detail" target="_blank" href="https://www.hyblab.fr/le-projet-sur-les-archives-sonores-de-la-region-recompense-lors-du-dernier-hyblab-nantais/">
+      <span>En savoir plus +</span>
+    </a>      
+  </div>
+
+  <div class="box">
+    <div class="text_box">
+      <h2>
+        <a href="#">
+          <i class="fa fa-bar-chart"></i><span>Bar chart</span>
+        </a>      
+      </h2>
+    </div>
+    <div id="bar_chart">
+    </div>
+    <a class="detail" target="_blank" href="https://d3js.org/">
+      <span>En savoir plus +</span>
+    </a>  
+  </div>
+
+  <% rand(1..10).times do |i|%>
+     <div class="box">
+    <div class="text_box">
+      <h2>
+        <a href="#">
+          <i class="fa fa-paragraph"></i><span>Ipsum</span>
+        </a>      
+      </h2>
+      <p>Lorem ipsum dolor sit amet, no mea volutpat petentium, an est purto numquam definitiones, probo choro sea at. Equidem moderatius liberavisse est te, tantas adolescens ei duo. Eu eos ignota.</p>
+    </div>
+    <div class="data_box">
+      <% 3.times do |j|%>
+        <div class="sub_data_box">
+          <span class="data"><%= rand(1..999) %></span>
+          <p>Lorem</p>
+        </div>
+      <% end %>
+    </div>
+    <a class="detail" href="#">
+      <span>En savoir plus +</span>
+    </a>      
+  </div>
+  <% end %>
+</div>
