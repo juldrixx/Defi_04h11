@@ -46,6 +46,7 @@ window.onload = function () {
     var g = svg.append('g')
         .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
+    // Axes
     var x = d3.scaleBand()
         .rangeRound([0, width])
         .padding(0.1);
@@ -98,6 +99,7 @@ window.onload = function () {
         .attr('y', 0)
         .text('Nombre de buts pris par le FCN');
 
+    // Génération des barres de l'histogramme
     g.selectAll('.bar')
         .data(dataset)
         .enter()
@@ -123,7 +125,7 @@ window.onload = function () {
             tooltip.select("text").text(d.buts + ' buts');
         });
 
-    // Prep the tooltip bits, initial display is hidden
+    // Tooltip pour les barres de l'histogramme
     var tooltip = svg.append("g")
         .attr("class", "tooltip")
         .style("display", "none");
@@ -141,6 +143,7 @@ window.onload = function () {
         .attr("font-size", "12px")
         .attr("font-weight", "bold");
 
+    // Bar-chart responsive
     function resize() {
         width = parseInt(d3.select("#bar_chart").style("width"), 10) - margin.left - margin.right;
         height = parseInt(d3.select("#bar_chart").style("height"), 10) - margin.top - margin.bottom;
