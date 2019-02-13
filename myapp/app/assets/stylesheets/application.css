@@ -52,7 +52,7 @@ html, body {
     height: 345px;
     margin-right: 1.7%;
     margin-bottom: 20px;
-    color: #fff;
+    color: #FFFFFF;
     padding: 20px 30px 0 30px;
 }
 
@@ -63,11 +63,11 @@ html, body {
     width: 100%;
     padding-bottom: 10px;
     margin-bottom: 10px;
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid #FFFFFF;
 }
 
 .boxes_container .box h2 a {
-    color: #fff;
+    color: #FFFFFF;
 }
 
 .boxes_container .box h2 i {
@@ -77,6 +77,11 @@ html, body {
 .boxes_container .box h2 span {
     display: inline-block;
     margin-left: 20px;
+}
+
+.boxes_container .box h2:hover span, .boxes_container .box h2:hover i{
+    transform: scale(1.1);
+    transition: all 0.8 ease-in;
 }
 
 .boxes_container .text_box>p {
@@ -122,7 +127,7 @@ html, body {
     font-size: 1.4rem;
     font-weight: 500;
     text-transform: uppercase;
-    color: #fff;
+    color: #FFFFFF;
     text-align: right;
 }
 
@@ -166,4 +171,16 @@ html, body {
     .boxes_container .box:nth-child(3n + 3) {
         margin-right: 0;
     }
+}
+
+.x_axis line, .x_axis path, .y_axis line, .y_axis path {
+    stroke: #D6D6D6;    
+}
+
+.x_axis text, .y_axis text {
+    fill: #D6D6D6;
+}
+
+.bar:hover {
+    opacity: 0.9;
 }

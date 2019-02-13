@@ -17,94 +17,149 @@
 //= require d3
 
 window.onload = function () {
+
     var dataset = [
-        { month: "Jan", pizzas: 10000 },
-        { month: "Feb", pizzas: 20000 },
-        { month: "Mar", pizzas: 40000 },
-        { month: "Apr", pizzas: 30000 },
-        { month: "May", pizzas: 30000 },
-        { month: "Jun", pizzas: 50000 },
-        { month: "Jul", pizzas: 30000 },
-        { month: "Aug", pizzas: 50000 },
-        { month: "Sep", pizzas: 60000 },
-        { month: "Oct", pizzas: 20000 },
-        { month: "Nov", pizzas: 10000 },
-        { month: "Dec", pizzas: 90000 },
+        { periode: "2010-2011", buts: 46 },
+        { periode: "2011-2012", buts: 47 },
+        { periode: "2012-2013", buts: 29 },
+        { periode: "2013-2014", buts: 50 },
+        { periode: "2014-2015", buts: 48 },
+        { periode: "2015-2016", buts: 53 },
+        { periode: "2016-2017", buts: 60 },
+        { periode: "2017-2018", buts: 48 },
     ];
-    // Notice the change of dataset
 
-    // Calculate Margins and canvas dimensions
-    var margin = { top: 40, right: 40, bottom: 40, left: 60 },
-        width,
-        height = 200 - margin.top - margin.bottom;
+    var margin = {
+        top: 20,
+        right: 20,
+        bottom: 40,
+        left: 40
+    };
 
-    // Notice the change of Scale to Band and how the scale now starts at zero
+    var width = parseInt(d3.select('#bar_chart').style('width')) - margin.left - margin.right;
+    var height = 210 - margin.top - margin.bottom;
+
+    var svg = d3.select('#bar_chart').append('svg');
+    svg.attr('width', '100%')
+        .attr('height', height + margin.top + margin.bottom);
+
+    var g = svg.append('g')
+        .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+
     var x = d3.scaleBand()
-        .range([0, width])
+        .rangeRound([0, width])
         .padding(0.1);
-
     var y = d3.scaleLinear()
-        .range([height, 0]);
+        .rangeRound([height, 0]);
 
-    var svg = d3.select("#bar_chart").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    x.domain(dataset.map(function (d) {
+        return d.periode;
+    }));
 
-    x.domain(dataset.map(function (d) { return d.month; }));
-    y.domain([0, d3.max(dataset, function (d) { return d.pizzas; })]);
+    y.domain([0, d3.max(dataset, function (d) {
+        return d.buts;
+    })]);
 
-    // Axes
-    var xAxisElement = svg.append("g")
-        .attr("class", "axis axis--x")
-        .attr("transform", "translate(0," + height + ")")
+    g.append('g')
+        .attr('transform', 'translate(0, ' + height + ')')
+        .attr('class', 'x_axis')
+        .call(d3.axisBottom(x));
 
-
-    svg.append("g")
-        .attr("class", "axis axis--y")
+    g.append('g')
+        .attr('class', 'y_axis')
         .call(d3.axisLeft(y));
 
+    // Label axe Y
+    g.append('text')
+        .style('font-size', '14px')
+        .style('fill', '#FFFFFF')
+        .attr('text-anchor', 'middle')
+        .attr('class', 'y_axis_label')
+        .attr('transform', 'translate(' + (margin.left - 70) + ', ' + (height / 2) + ')rotate(-90)')
+        .text('Nombre de buts pris');
 
-    function drawChart() {
-        width = parseInt(d3.select('#bar_chart').style('width'), 10) - margin.left - margin.right;
+    // Label axe X
+    g.append('text')
+        .style('font-size', '14px')
+        .style('fill', '#FFFFFF')
+        .attr('text-anchor', 'middle')
+        .attr('class', 'x_axis_label')
+        .attr('transform', 'translate(' + (width / 2) + ', ' + (height - (margin.bottom - 70)) + ')')
+        .text('Saison');
+
+    // Label titre
+    g.append('text')
+        .style('font-size', '15px')
+        .style('font-weight', 'bold')
+        .style('fill', '#FFFFFF')
+        .attr('text-anchor', 'middle')
+        .attr('class', 'title_label')
+        .attr('x', (width / 2))
+        .attr('y', 0)
+        .text('Nombre de buts pris par le FCN');
+
+    g.selectAll('.bar')
+        .data(dataset)
+        .enter()
+        .append('rect')
+        .attr('class', 'bar')
+        .attr('x', function (d) {
+            return x(d.periode);
+        })
+        .attr('y', function (d) {
+            return y(d.buts);
+        })
+        .attr('width', x.bandwidth())
+        .attr('height', function (d) {
+            return height - y(d.buts);
+        })
+        .attr('fill', '#FFFFFF')
+        .on("mouseover", function () { tooltip.style("display", null); })
+        .on("mouseout", function () { tooltip.style("display", "none"); })
+        .on("mousemove", function (d) {
+            var xPosition = d3.mouse(this)[0] - 5;
+            var yPosition = d3.mouse(this)[1] - 5;
+            tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+            tooltip.select("text").text(d.buts + ' buts');
+        });
+
+    // Prep the tooltip bits, initial display is hidden
+    var tooltip = svg.append("g")
+        .attr("class", "tooltip")
+        .style("display", "none");
+
+    tooltip.append("rect")
+        .attr("width", 60)
+        .attr("height", 20)
+        .attr("fill", "white")
+        .style("opacity", 0.5);
+
+    tooltip.append("text")
+        .attr("x", 30)
+        .attr("dy", "1.2em")
+        .style("text-anchor", "middle")
+        .attr("font-size", "12px")
+        .attr("font-weight", "bold");
+
+    function resize() {
+        width = parseInt(d3.select("#bar_chart").style("width"), 10) - margin.left - margin.right;
+        height = parseInt(d3.select("#bar_chart").style("height"), 10) - margin.top - margin.bottom;
         x.range([0, width]);
-        xAxisElement.call(d3.axisBottom(x));
+        g.selectAll('.x_axis').call(d3.axisBottom(x));
 
-        // Labels
-        svg.append("text")
-            .attr("text-anchor", "middle")
-            .style("font-size", "14px")
-            .attr("transform", "translate(" + (margin.left - 108) + "," + (height / 2) + ")rotate(-90)")
-            .text("Pizzas");
-
-        svg.append("text")
-            .style("font-size", "14px")
-            .attr("text-anchor", "middle")
-            .attr("transform", "translate(" + (width / 2) + "," + (height - (margin.bottom - 74)) + ")")
-            .text("Month");
-
-        //  Chart Title
-        svg.append("text")
+        g.selectAll('.x_axis_label').attr('transform', 'translate(' + (width / 2) + ', ' + (height - (margin.bottom - 70)) + ')')
+        g.selectAll('.title_label')
             .attr("x", (width / 2))
-            .attr("y", 20 - (margin.top / 2))
-            .attr("text-anchor", "middle")
-            .style("font-size", "16px")
-            .text("Pizza consumption");
+            .attr("y", 0)
 
-        // Adding Bars
-        svg.selectAll(".bar")
-            .data(dataset)
-            .enter().append("rect")
-            .attr("class", "bar")
-            .attr("x", function (d) { return x(d.month); })
-            .attr("width", x.bandwidth())
-            .attr("y", function (d) { return y(d.pizzas); })
-            .attr("height", function (d) { return height - y(d.pizzas); });
-
+        g.selectAll('.bar')
+            .attr('x', function (d) {
+                return x(d.periode);
+            })
+            .attr('width', x.bandwidth());
     }
 
-    drawChart();
-    window.addEventListener('resize', drawChart);
-
+    window.addEventListener('resize', resize);
 };
+
+console.log('zazeze')
